@@ -21,4 +21,4 @@ pickups for a given hour in the day. Look at splitting by days that are weekends
 For example, we have the following for hourly counts for Monday through Thursday (Friday nights
 should have a different behavior).
 
-![Hourly Pickups for Monday Through Thursday](/graphs/mon_th_pickups.svg?sanitize=true)
+![Hourly Pickups for Monday Through Thursday](graphs/mon_th_pickups.svg?sanitize=true)
