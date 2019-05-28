@@ -10,11 +10,12 @@ class PoissonMixtureModel:
     Assumes that the logarithm of the Poisson mean count is linear in X.
     '''
 
-    def __init__(self, n_steps = 75, learning_rate = 0.005, n_grad_per_maximization = 20, keep_history = True):
+    def __init__(self, n_steps = 75, learning_rate = 0.005, n_grad_per_maximization = 20, keep_history = True, alpha = 0.0):
         self.n_steps = n_steps
         self.learning_rate = learning_rate
         self.n_grad_per_maximization = n_grad_per_maximization
         self.keep_history = keep_history
+        self.alpha = alpha
 
         self.n_poisson = 2
         self.mixture_probs = np.full(self.n_poisson, 1.0 / self.n_poisson)
@@ -37,7 +38,8 @@ class PoissonMixtureModel:
         #self.coefs = np.random.uniform(size = (self.n_poisson, n_features))
 
         if self.keep_history:
-            self.history = {'coefs' : [self.coefs], 'intercepts' : [self.intercepts]}
+            self.history = {'coefs' : [self.coefs], 'intercepts' : [self.intercepts],
+                            'mixture_probs': [self.mixture_probs]}
 
         for i_step in range(self.n_steps):
             responsibilities = self._expectation_step(X, y)
@@ -48,6 +50,7 @@ class PoissonMixtureModel:
     def _update_history(self):
         self.history['coefs'] = np.append(self.history['coefs'], [self.coefs], axis = 0)
         self.history['intercepts'] = np.append(self.history['intercepts'], [self.intercepts], axis = 0)
+        self.history['mixture_probs'] = np.append(self.history['mixture_probs'], [self.mixture_probs], axis = 0)
 
     def _initialize_fit_parameters(self, X, y):
         _, n_features = X.shape 
@@ -131,5 +134,6 @@ class PoissonMixtureModel:
         x_weights = responsibilities.T * (y - means_given_poisson) 
         totals = responsibilities.sum(axis = 0)
         grad_coefs = np.dot(x_weights, X) / totals.reshape(-1, 1) 
+        grad_coefs -= self.alpha * self.coefs
         grad_intercepts = x_weights.sum(axis = -1) / totals 
         return grad_coefs, grad_intercepts
