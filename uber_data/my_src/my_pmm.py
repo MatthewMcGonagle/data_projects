@@ -134,6 +134,6 @@ class PoissonMixtureModel:
         x_weights = responsibilities.T * (y - means_given_poisson) 
         totals = responsibilities.sum(axis = 0)
         grad_coefs = np.dot(x_weights, X) / totals.reshape(-1, 1) 
-        grad_coefs -= self.alpha * self.coefs
+        grad_coefs -= self.alpha.reshape(1, -1) * self.coefs
         grad_intercepts = x_weights.sum(axis = -1) / totals 
         return grad_coefs, grad_intercepts
