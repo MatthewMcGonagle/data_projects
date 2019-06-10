@@ -8,6 +8,32 @@ The data includes the following for each pickup:
 * Latitude
 * Longitude
 
+# Virtual Environment
+
+## Installing the Virtual Environment
+
+Notebooks use `statsmodels.py` which has a dependency on `scipy.py 1.2.0`. So we need
+to use a virtual environment. Make sure you have `virtualenv.py`; if not, then run
+```
+pip install virtualenv
+```
+
+First, we install the proper version of `scipy` in the virtual environment and install a `jupyter`
+kernel for the virtual environment. From the project directory, run the following:
+
+1. Run `virtualenv --system-site-packages venv`.
+2. Activate the virtual environment. For example on Windows, run `venv\Scripts\activate`.
+3. From the virtual environment, run `pip install scipy==1.2.0`. 
+4. From the virtual environment, run `python -m ipykernel install --user --name=uber_data`.
+5. Exit the virtual environment by running `deactivate`.
+
+## Using the Virtual Environment
+
+Now, when we run `jupyter notebook` (inside or outside the virtual environment), just make sure
+you are using the `uber_data` kernel (and NOT the default kernel, e.g. `Python 3`).
+
+For example, using the menus in the notebook, go to `Kernel > Change kernel > uber_data`.
+
 # Notebooks
 
 We have the following notebooks:
