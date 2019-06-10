@@ -10,10 +10,12 @@ The data includes the following for each pickup:
 
 # Virtual Environment
 
+Notebooks use `statsmodels.py` which has a dependency on `scipy.py 1.2.0`. So we need
+to use a virtual environment. 
+
 ## Installing the Virtual Environment
 
-Notebooks use `statsmodels.py` which has a dependency on `scipy.py 1.2.0`. So we need
-to use a virtual environment. Make sure you have `virtualenv.py`; if not, then run
+Make sure you have `virtualenv.py`; if not, then run
 ```
 pip install virtualenv
 ```
