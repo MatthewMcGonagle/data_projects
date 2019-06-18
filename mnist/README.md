@@ -66,4 +66,4 @@ For the following example:
 
 this is the output of the first 2d convolution and 2d pooling:
 
-![Example of Output of First Convolution](graphs/conv_pooling1.png)
+![Example of Output of First Convolution](graphs/conv_pool1.png)
