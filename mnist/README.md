@@ -44,7 +44,7 @@ We have the following notebooks:
 
 ### Low-Dimension Covolution Filters Using Harmonic Polynomials
 
-####[tensorflow\_harmonic\_poly\_filters.ipynb](tensorflow_harmonic_poly_filters.pynb)
+[tensorflow\_harmonic\_poly\_filters.ipynb](tensorflow_harmonic_poly_filters.pynb)
 
 Look at restricting the convolutional filters to a low-dimensional space consisting of harmonic polynomials. 
 The normal filter consists of a `5x5` patch for each input channel and output channel; i.e. a tensor of 
