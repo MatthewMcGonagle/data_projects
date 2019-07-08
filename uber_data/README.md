@@ -40,6 +40,21 @@ For example, using the menus in the notebook, go to `Kernel > Change kernel > ub
 
 We have the following notebooks:
 
+## Hourly Pickup Counts for Different Days of the Week
+
+###[`continuous_weekly_negative_binomial.ipynb`](continuous_weekly_negative_binomial.ipynb)
+
+Group the pickup data to get counts of how many pickups occur each hour (so 24 in a single day).
+Model these counts based on the day of the week. Can be used to make strategic decisions related to
+how busy drivers are at different points in the week (e.g. what are the most popular times of the week).
+
+Here is the resulting model:
+
+![Final Model Counts](graphs/final_model_counts.svg?sanitize=true)
+
+The model was selected from several variations using cross-validation where the hold-out set is
+scored based on the mean log-likelihood of the model.
+
 ## Hourly Pickup Exploration
 
 ### [`hourly_pickups_exploration.ipynb`](hourly_pickups_exploration.ipynb)
