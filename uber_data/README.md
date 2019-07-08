@@ -42,7 +42,7 @@ We have the following notebooks:
 
 ## Hourly Pickup Counts for Different Days of the Week
 
-###[`continuous_weekly_negative_binomial.ipynb`](continuous_weekly_negative_binomial.ipynb)
+### [`continuous_weekly_negative_binomial.ipynb`](continuous_weekly_negative_binomial.ipynb)
 
 Group the pickup data to get counts of how many pickups occur each hour (so 24 in a single day).
 Model these counts based on the day of the week. Can be used to make strategic decisions related to
@@ -53,7 +53,13 @@ Here is the resulting model:
 ![Final Model Counts](graphs/final_model_counts.svg?sanitize=true)
 
 The model was selected from several variations using cross-validation where the hold-out set is
-scored based on the mean log-likelihood of the model.
+scored based on the mean log-likelihood of the model. The final model uses that the conditional
+distribution of `y = hourly pickup count` given `x = day of week (0 is Monday)` is a negative
+binomial distribtuion.
+
+The negative binomial distribution is a common model for `Poisson-like` data that has too large a
+variance, i.e. over-dispersion. The idea is that it is a poisson model with a latent (gamma)
+distribution for the mean.
 
 ## Hourly Pickup Exploration
 
