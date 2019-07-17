@@ -79,3 +79,47 @@ class LowDimConv2D(tf.keras.layers.Layer):
                 x = getattr(x, obj)
             output.activation = x 
         return output
+
+class AnisotropicGrad2D(tf.keras.layers.Layer):
+    '''
+    Train on direction (not necessarily normalized) direction self.first_direction.
+    Other trainable weight is the log of the scaling to apply to product with the
+    rotation of self.first_direction.
+    ''' 
+
+    def __init__(self, n_out_channels, **kwargs):
+        super(AnisotropicGrad2D, self).__init__(**kwargs)
+        self.n_out_channels = n_out_channels
+
+    def build(self, input_shape): 
+        self.angles = self.add_variable('angles',
+                                        shape = [self.n_out_channels],
+                                        initializer = tf.keras.initializers.RandomUniform(0, np.pi/2))
+
+        # self.all_log_scale = self.add_variable('all_log_scale',
+        #                                        shape = [self.n_out_channels],
+        #                                        initializer = tf.keras.initializers.RandomUniform)
+        self.other_log_scale = self.add_variable('other_log_scale',
+                                                 shape = [self.n_out_channels],
+                                                 initializer = tf.keras.initializers.RandomUniform)
+        self.rotation = tf.constant([[0, -1],
+                                     [1, 0]], dtype = 'float32')
+
+    def call(self, xs):
+        # Don't forget that xs.shape[0] is the number of input samples.
+        # xs should be a 2D image of channels.
+        differences = tf.stack([xs[:, 1:, :-1, ...] - xs[:, :-1, :-1, ...],
+                                xs[:, :-1, 1:, ...] - xs[:, :-1, :-1, ...]],
+                                axis = -1)
+        first_directions = tf.stack([tf.math.cos(self.angles), tf.math.sin(self.angles)],
+                                    axis = 0)
+        first_square = tf.tensordot(differences, first_directions, axes = [[-1], [0]])
+        first_square = tf.math.square(first_square)
+
+        second_directions = tf.stack([-tf.math.sin(self.angles), tf.math.cos(self.angles)], axis = 0)
+         #tf.tensordot(self.rotation, first_directions, axes = [[-1], [0]])
+        second_square = tf.tensordot(differences, second_directions, axes = [[-1], [0]]) 
+        second_square = tf.math.square(second_square) * tf.math.exp(self.other_log_scale)
+        sizes = tf.math.sqrt(1 + first_square + second_square) #* tf.math.exp(self.all_log_scale)
+        return sizes
+
